@@ -13,7 +13,7 @@ TCP_SERVER_PORTS = [5000,5002,5003]
         
 class TCP_UDP_forwarder(threading.Thread):
     def __init__(self, tcp_server_ip, tcp_server_port):
-        threading.Thread.__init_(self)
+        threading.Thread.__init__(self)
         self.tcp_server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.tcp_server_sock.bind((tcp_server_id, tcp_server_port))
         
