@@ -1,16 +1,19 @@
 import socket
+import threading
+
 
 MAX_LISTEN_COUNT = 1
 MAX_DATA_LEN = 1024
 DEFAULT_UDP_PORT = 5000
 
-class TCP_UPD_Forwarder():
+class TCP_UPD_Forwarder(threading.Thread):
     def __init__(self,port):
+        threading.Thread.__init__(self)
         self.port = port
-        socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        socket.bind('',port)
-        socket.listen(MAX_LISTEN_COUNT)
-        self.socket = socket
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.bind(('',port))
+        self.socket.listen(MAX_LISTEN_COUNT)
+
 
     def process_socket(self):
         while True:
@@ -31,14 +34,17 @@ class TCP_UPD_Forwarder():
     def recv_from_UDP(self):
         pass
 
+    def run(self):
+        self.process_socket()
+        
 
-class UDP_TCP_Frowarder():
+class UDP_TCP_Frowarder(threading.Thread):
     def __init__(self,remote_host,port):
+        threading.Thread.__init__(self)
         if not port:
             port = DEFAULT_UDP_PORT
-        socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        scoket.bind('',port)
-        self.socket = socket
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.socket.bind(('',port))
         self.host = remote_host
 
     def process_socket(self):
@@ -57,3 +63,15 @@ class UDP_TCP_Frowarder():
     def send_to_TCP(self,data,port):
         #send data and port
         pass
+
+    def run(self):
+        self.process_socket()
+        
+if __name__ == "__main__":
+    tcp_udp_forwarder = TCP_UPD_Forwarder(5000)
+    tcp_udp_forwarder.start()
+    tcp_udp_forwarder.join()
+    udp_tcp_forwarder = UDP_TCP_Frowarder('127.0.0.1',9000)
+    udp_tcp_forwarder.start()
+    udp_tcp_forwarder.join()
+    
