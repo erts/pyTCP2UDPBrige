@@ -4,6 +4,8 @@ pyTCP2UDPBrige
 Python TCP to UDP birge
 
 Task:
-1. Each socket work in separate tread.
-2. Each socket should can transfer data to each socket independent type.
-3. Each socket should can catch any packet and drop, modify etc.
+<ul>
+<li>1. Each socket work in separate tread.</li>
+<li>2. Each socket should transfer data to each socket independent type.</li>
+<li>3. Each socket should catch any packet and drop, modify etc.</li>
+</ul>
