@@ -33,7 +33,6 @@ class TCP_UPD_Forwarder(threading.Thread):
     def send_to_UDP(self,data):
         #send data and self.port
         print "TO_UDP:",data
-        pass
 
     def recv_from_UDP(self):
         pass
