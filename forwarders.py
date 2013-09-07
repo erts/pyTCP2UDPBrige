@@ -1,8 +1,9 @@
 import socket
 import threading
+import select
+import sys
 
-
-MAX_LISTEN_COUNT = 1
+MAX_LISTEN_COUNT = 1 
 MAX_DATA_LEN = 1024
 DEFAULT_UDP_PORT = 5000
 
@@ -17,15 +18,17 @@ class TCP_UPD_Forwarder(threading.Thread):
 
     def process_socket(self):
         while True:
-            self.client_socket, self.client_address = self.socket.accept()
-            while True:
-                data = self.client_socket.recv(MAX_DATA_LEN)
-                if data:
-                    self.send_to_UDP(data)
-                data = self.recv_from_UDP()
-                if data:
-                    client_socket.send(data)
-        
+            inputready,outputready,exceptready = select.select([self.socket], [], [],0.001)
+            for s in inputready:
+                if s == self.socket:
+                    self.client_socket, self.client_address = self.socket.accept()
+                    while True:
+                        data = self.client_socket.recv(MAX_DATA_LEN)
+                        if data:
+                            self.send_to_UDP(data)
+                        data = self.recv_from_UDP()
+                        if data:
+                            self.client_socket.send(data)
 
     def send_to_UDP(self,data):
         #send data and self.port
@@ -34,6 +37,7 @@ class TCP_UPD_Forwarder(threading.Thread):
 
     def recv_from_UDP(self):
         pass
+        return "I am UDP data" 
 
     def run(self):
         self.process_socket()
@@ -76,10 +80,6 @@ def main():
     udp_tcp_forwarder = UDP_TCP_Frowarder('127.0.0.1',9000)
     udp_tcp_forwarder.start()
     udp_tcp_forwarder.join()
-<<<<<<< HEAD
-    
-=======
-        
         
 if __name__ == "__main__":
     try:
@@ -87,4 +87,3 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         sys.exit(1)
     
->>>>>>> 7b6693b250f65d51c83c13a00c5766115df1aff2
