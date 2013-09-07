@@ -68,11 +68,23 @@ class UDP_TCP_Frowarder(threading.Thread):
     def run(self):
         self.process_socket()
         
-if __name__ == "__main__":
+        
+def main():
     tcp_udp_forwarder = TCP_UPD_Forwarder(5000)
     tcp_udp_forwarder.start()
     tcp_udp_forwarder.join()
     udp_tcp_forwarder = UDP_TCP_Frowarder('127.0.0.1',9000)
     udp_tcp_forwarder.start()
     udp_tcp_forwarder.join()
+<<<<<<< HEAD
     
+=======
+        
+        
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        sys.exit(1)
+    
+>>>>>>> 7b6693b250f65d51c83c13a00c5766115df1aff2
