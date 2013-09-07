@@ -22,15 +22,15 @@ class TCP_UPD_Forwarder(threading.Thread):
                 data = self.client_socket.recv(MAX_DATA_LEN)
                 if data:
                     self.send_to_UDP(data)
+                    pass
                 data = self.recv_from_UDP()
                 if data:
-                    client_socket.send(data)
+                    self.client_socket.send(data)
         
 
     def send_to_UDP(self,data):
         #send data and self.port
         print "TO_UDP:",data
-        pass
 
     def recv_from_UDP(self):
         pass
